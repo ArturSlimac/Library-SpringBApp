@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+	<div class="container px-4 px-lg-5">
+		<!-- LOGO WITH LINK TO HOME -->
+		<a class="navbar-brand" th:href="|/books|" th:text="#{nav.logo}"></a>
+		<div class="collapse navbar-collapse">
+			<!-- LEFT SIDE -->
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+				<!-- ALL BOOKS -->
+				<li class="nav-item"><a
+					th:classappend="${booksActive == true} ? 'active' : ''"
+					class="nav-link" aria-current="page" th:href="|/books|"
+					th:text="#{nav.allBooks}"></a></li>
+				<!-- MOST POPULAR -->
+				<li class="nav-item"><a
+					th:classappend="${popularActive == true} ? 'active' : ''"
+					class="nav-link" th:href="|/books/popular|"
+					th:text="#{nav.popularBooks}"></a></li>
+			</ul>
+			<!-- RIGHT SIDE -->
+			<form class="d-flex" th:action="@{/logout}" method="post">
+				<!-- WELCOME USERNAME ROLE -->
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+					<li class="nav-link"
+						th:text="|#{nav.welcome}, ${user.username} (${#authentication.principal.authorities[0].authority})|">
+					</li>
+				</ul>
+				<!-- BUTTON ADD BOOK -->
+				<th:block
+					th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+					<a class="btn btn-outline-dark me-3" th:href="|/books/add|"
+						th:text="#{nav.addBook}"></a>
+				</th:block>
+				<!-- BUTTON FAVOURITES -->
+				<a class="btn btn-outline-dark me-3" th:href="|/favourites|"> <i
+					class="bi-cart-fill me-1"></i> <span th:text="|#{nav.fav} |"></span>
+					<span class="badge bg-dark text-white ms-1 rounded-pill"
+					th:text="${user.favBooks.size()}"></span>
+					
+				</a>
+				<!-- BUTTON LOGOUT -->
+				<button type="submit" class="btn btn-outline-dark me-3"
+					th:text="|#{nav.logout}|"></button>
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
+			</form>
+		</div>
+	</div>
+</nav>
+
+
